@@ -588,23 +588,15 @@ if not st.session_state.logged_in:
 
     st.stop() # Stops the rest of the app from running until logged inpuyyp
 
+logo_data = base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()
 # --- 5. MAIN APP UI ---
 with st.sidebar:
     # --- BRANDING: ICON + GRADIENT TEXT ALIGNED ---
     st.markdown(
         f"""
         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-            <img src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}" width="65">
-            <h1 style="
-                background: linear-gradient(90deg, #66BB6A, #A5D6A7, #81C784);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                font-size: 2.8rem;
-                font-weight: 850;
-                margin: 0;
-                line-height: 1;
-                white-space: nowrap;
-            ">Kinetix AI</h1>
+            <img src="data:image/png;base64,{logo_data}" width="65">
+            <h1 style="background: linear-gradient(90deg, #66BB6A, #A5D6A7, #81C784); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: 850; margin: 0; line-height: 1; white-space: nowrap;">Kinetix AI</h1>
         </div>
         """,
         unsafe_allow_html=True
