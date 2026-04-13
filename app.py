@@ -919,21 +919,14 @@ with tab_food:
             st.error(f"PDF Error: {e}")
 
 
+tracker_icon_data = base64.b64encode(open("tracker_icon.png", "rb").read()).decode()
 with tab_tracker:
     # --- BRANDED TRACKER HEADER (Left-Aligned) ---
     st.markdown(
         f"""
         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
-            <img src="data:image/png;base64,{base64.b64encode(open("tracker_icon.png", "rb").read()).decode()}" width="50">
-            <h1 style="
-                background: linear-gradient(90deg, #FDC830, #F37335, #FF5F6D);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                font-size: 2.8rem;
-                font-weight: 800;
-                margin: 0;
-                line-height: 1;
-            ">Daily Meal Log</h1>
+            <img src="data:image/png;base64,{tracker_icon_data}" width="50">
+            <h1 style="background: linear-gradient(90deg, #FDC830, #F37335, #FF5F6D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: 800; margin: 0; line-height: 1;">Daily Meal Log</h1>
         </div>
         <hr style="margin-top: 2px; margin-bottom: 25px; border: 0; border-top: 2px solid #eee; opacity: 0.4;">
         """,
