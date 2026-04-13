@@ -220,7 +220,7 @@ def get_macros_from_text(text_input, client):
     Act as a nutrition database. Extract macros from this text: "{text_input}"
     Return ONLY a JSON object. If multiple items, sum them.
     Format: {{"Protein": 30, "Carbs": 50, "Fats": 10, "Calories": 410}}
-    """
+    ""
     
     for model_id in MODEL_PRIORITY:
         try:
@@ -500,7 +500,7 @@ local_css("style.css")
 
 
 # --- 3. CONFIGURATION & STATE ---
-load_dotenv()
+#load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
 
