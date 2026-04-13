@@ -232,9 +232,7 @@ def get_macros_from_text(text_input, client):
         except:
             continue
     return None
-
 def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
-    """Generates a text-based diet plan calibrated to maintenance and target calories"""
     MODEL_PRIORITY = ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-1.5-flash"]
     target_kcal = stats.get('target', 'Not specified')
     prompt = f"""
@@ -252,10 +250,7 @@ def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
        - If 'Eggitarian': NO meat/fish. Eggs and dairy are allowed.
     4. Respect all allergies: {requests}.
     5. At the end, provide a 'DAILY TOTAL' summary.
-    6. FUTURE PERSPECTIVE & REASSESSMENT:
-       - Add a section titled "📊 Progression & Reassessment".
-       - Specify that this plan should be followed for 4-6 weeks.
-       - Advise the user to recalculate their Maintenance Calories and BMI if their weight shifts by more than 2 kg or if their activity level changes.
+    6. Progression: This plan should be followed for 4-6 weeks.
     7. Format using professional Markdown with clear tables for the meals.
     """
     for model_id in MODEL_PRIORITY:
@@ -265,7 +260,6 @@ def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
         except:
             continue
     return "Error: AI Nutritionist is currently offline."
-
 def calculate_angle(a, b, c):
     a, b, c = np.array(a), np.array(b), np.array(c)
     radians = np.arctan2(c[1]-b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
