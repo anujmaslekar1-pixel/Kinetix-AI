@@ -236,18 +236,13 @@ def get_macros_from_text(text_input, client):
 def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
     """Generates a text-based diet plan calibrated to maintenance and target calories"""
     MODEL_PRIORITY = ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-1.5-flash"]
-
-    # Extracting specific calorie targets for the AI
     target_kcal = stats.get('target', 'Not specified')
-
     prompt = f"""
     ROLE: Clinical Nutritionist and Sports Dietitian.
     USER PROFILE: {u_name} | {diet_type} diet | Nutrition Goal: {goal}.
     DAILY CALORIE TARGET: {target_kcal} kcal
     SPECIAL CONSTRAINTS/ALLERGIES: {requests}
-
     TASK: Provide a high-protein 1-day sample meal plan that precisely hits the target of {target_kcal} kcal.
-    
     STRICT RULES:
     1. Every meal must contribute toward the {target_kcal} kcal limit.
     2. For EVERY MEAL, provide a breakdown: [Calories, Protein(g), Carbs(g), Fats(g)].
@@ -257,22 +252,19 @@ def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
        - If 'Eggitarian': NO meat/fish. Eggs and dairy are allowed.
     4. Respect all allergies: {requests}.
     5. At the end, provide a 'DAILY TOTAL' summary.
-    
     6. FUTURE PERSPECTIVE & REASSESSMENT:
        - Add a section titled "📊 Progression & Reassessment".
        - Specify that this plan should be followed for 4-6 weeks.
        - Advise the user to recalculate their Maintenance Calories and BMI if their weight shifts by more than 2 kg or if their activity level changes.
-
     7. Format using professional Markdown with clear tables for the meals.
     """
-    
     for model_id in MODEL_PRIORITY:
         try:
             response = client.models.generate_content(model=model_id, contents=prompt)
             return response.text
         except:
             continue
-    return "Error: AI Nutritionist is currently offline. Please try again in a moment."
+    return "Error: AI Nutritionist is currently offline."
 
 def calculate_angle(a, b, c):
     a, b, c = np.array(a), np.array(b), np.array(c)
