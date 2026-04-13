@@ -1030,26 +1030,19 @@ with tab_tracker:
         st.session_state.meal_data = {}
         st.rerun()
 
+exercise_icon_data = base64.b64encode(open("exercise_icon.png", "rb").read()).decode()
 with tab_exercise:
     # --- CORE AI: GREEN GRADIENT HEADER ---
     st.markdown(
-        f"""
-        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
-            <img src="data:image/png;base64,{base64.b64encode(open("exercise_icon.png", "rb").read()).decode()}" width="55">
-            <h1 style="
-                background: linear-gradient(90deg, #FDC830, #F37335, #FF5F6D);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                font-size: 2.8rem;
-                font-weight: 800;
-                margin: 0;
-                line-height: 1;
-            ">Exercise Analyzer</h1>
-        </div>
-        <hr style="margin-top: 2px; margin-bottom: 25px; border: 0; border-top: 2px solid #eee; opacity: 0.4;">
-        """,
-        unsafe_allow_html=True
-    )
+            f"""
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                <img src="data:image/png;base64,{exercise_icon_data}" width="55">
+                <h1 style="background: linear-gradient(90deg, #FDC830, #F37335, #FF5F6D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: 800; margin: 0; line-height: 1;">Exercise Analyzer</h1>
+            </div>
+            <hr style="margin-top: 2px; margin-bottom: 25px; border: 0; border-top: 2px solid #eee; opacity: 0.4;">
+            """,
+            unsafe_allow_html=True
+        )
     # ... Rest of your MediaPipe / OpenCV logic ...
     with st.expander("📌 MANDATORY FILMING INSTRUCTIONS", expanded=True):
         st.warning("""
