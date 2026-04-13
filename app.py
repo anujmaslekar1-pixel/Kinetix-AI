@@ -532,23 +532,16 @@ if not st.session_state.logged_in:
         login_icon_base64 = base64.b64encode(open("login_icon.png", "rb").read()).decode()
         
         st.markdown(
-            f"""
-            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px; margin-bottom: 20px;">
-                <img src="data:image/png;base64,{login_icon_base64}" width="50">
-                <h1 style="
-                    background: linear-gradient(90deg, #66BB6A, #A5D6A7, #81C784);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    font-size: 2.8rem;
-                    font-weight: 900;
-                    margin: 0;
-                    line-height: 1;
-                    white-space: nowrap;
-                ">Kinetix Member Access</h1>
-            </div>
-            """, 
-            unsafe_allow_html=True
-        )
+    f"""
+    <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 20px; margin-bottom: 20px;">
+        <img src="data:image/png;base64,{login_icon_base64}" width="50">
+        <h1 style="background: linear-gradient(90deg, #66BB6A, #A5D6A7, #81C784); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: 900; margin: 0; line-height: 1; white-space: nowrap;">
+            Kinetix Member Access
+        </h1>
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
         
         # 3. LOGIN UI (Adding the radio button back in)
         mode = st.radio("Choose Action", ["Login", "Register"], horizontal=True)
