@@ -260,7 +260,7 @@ def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
     
     6. FUTURE PERSPECTIVE & REASSESSMENT:
        - Add a section titled "📊 Progression & Reassessment".
-       - Specify that this plan should be followed for 4–6 weeks.
+       - Specify that this plan should be followed for 4-6 weeks.
        - Advise the user to recalculate their Maintenance Calories and BMI if their weight shifts by more than 2kg or if their activity level changes.
 
     7. Format using professional Markdown with clear tables for the meals.
