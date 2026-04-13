@@ -840,6 +840,7 @@ with tab_plan:
             st.error(f"PDF Error: {e}")
 
 
+food_icon_data = base64.b64encode(open("food_icon.png", "rb").read()).decode()
 with tab_food:
     if not st.session_state.get('data_complete', False):
         st.warning("⚠️ Please complete your **Profile & Setup** tab first to unlock Nutrition AI.")
@@ -848,16 +849,8 @@ with tab_food:
         st.markdown(
             f"""
             <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
-                <img src="data:image/png;base64,{base64.b64encode(open("food_icon.png", "rb").read()).decode()}" width="50">
-                <h1 style="
-                    background: linear-gradient(90deg, #FDC830, #F37335, #FF5F6D);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    font-size: 2.8rem;
-                    font-weight: 800;
-                    margin: 0;
-                    line-height: 1;
-                ">Precision Nutrition AI</h1>
+                <img src="data:image/png;base64,{food_icon_data}" width="50">
+                <h1 style="background: linear-gradient(90deg, #FDC830, #F37335, #FF5F6D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: 800; margin: 0; line-height: 1;">Precision Nutrition AI</h1>
             </div>
             <hr style="margin-top: 2px; margin-bottom: 25px; border: 0; border-top: 2px solid #eee; opacity: 0.4;">
             """,
