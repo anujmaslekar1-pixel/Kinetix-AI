@@ -233,8 +233,8 @@ def get_macros_from_text(text_input, client):
             continue
     return None
 
-def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
-    """Generates a text-based diet plan calibrated to maintenance and target calories"""
+def generate_diet_plan(params):
+    """Generates a text-based diet plan calibrated to maintenance and target calories."""
     MODEL_PRIORITY = ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-1.5-flash"]
     
     # Extracting specific calorie targets for the AI
