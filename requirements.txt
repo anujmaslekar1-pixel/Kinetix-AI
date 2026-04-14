@@ -4,8 +4,8 @@ pillow
 python-dotenv
 sqlalchemy
 fpdf
-numpy<2.0.0
-opencv-python-headless
-mediapipe
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+mediapipe==0.10.14
 moviepy
 plotly
