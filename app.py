@@ -18,6 +18,7 @@ from mediapipe.tasks.python import vision
 import moviepy as me
 import io
 import base64
+import plotly.graph_objects as go
 
 
 if "data_complete" not in st.session_state:
@@ -662,8 +663,6 @@ with tab_profile:
         st.markdown(f"Your BMI is **{bmi}**, which is considered <span style='color:{bmi_clr}; font-weight:bold;'>{bmi_cat}</span>.", unsafe_allow_html=True)
 
         # Visual Gauge
-        import plotly.graph_objects as go
-        
         fig = go.Figure(go.Indicator(
             mode = "gauge+number",
             value = bmi,
