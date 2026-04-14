@@ -3,8 +3,10 @@ FROM python:3.11-slim
 
 # 2. Install the system libraries that were crashing on Streamlit
 # These are the "C++" parts that OpenCV and MediaPipe need to work.
+# 2. Install the MODERN system libraries for Debian 12
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
+    libglx-mesa0 \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
