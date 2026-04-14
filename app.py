@@ -235,7 +235,7 @@ def get_macros_from_text(text_input, client):
 def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
     MODEL_PRIORITY = ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-1.5-flash"]
     target_kcal = stats.get('target', 'Not specified')
-    prompt = f"""
+    prompt=f"""
     ROLE: Clinical Nutritionist and Sports Dietitian.
     USER PROFILE: {u_name} | {diet_type} diet | Nutrition Goal: {goal}.
     DAILY CALORIE TARGET: {target_kcal} kcal
