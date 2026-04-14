@@ -1046,46 +1046,51 @@ with tab_exercise:
     video_upload = st.file_uploader("Upload video", type=['mp4', 'mov'])
     
     if video_upload:
-        # 1. Prepare the video
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as tfile:
-            tfile.write(video_upload.read())
-            path = tfile.name
-        
-        ui_col1, ui_col2, ui_col3 = st.columns([1, 2, 1])
-        with ui_col2:
-            st.info("Original Upload")
-            st.video(path)
-        
-        # 2. THE UPDATED BUTTON LOGIC (Handles Video and Image)
-        if st.button("🚀 Analyze Form", key="final_analysis_trigger"):
-            with st.spinner("Analyzing Video"):
-
-                feedback = process_video_locally(path, ex_type)
-                res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
+    # 1. Prepare the video - WE REMOVE THE 'WITH' BLOCK to keep the file alive
+    tfile = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
+    tfile.write(video_upload.read())
+    path = tfile.name
+    tfile.close() # Close handle so OpenCV can open it, but delete=False keeps it on disk
+    
+    ui_col1, ui_col2, ui_col3 = st.columns([1, 2, 1])
+    with ui_col2:
+        st.info("Original Upload")
+        st.video(path)
+    
+    # 2. THE UPDATED BUTTON LOGIC
+    if st.button("🚀 Analyze Form", key="final_analysis_trigger"):
+        with st.spinner("Analyzing Video..."):
+            # Ensure process_video_locally doesn't crash on file paths
+            feedback = process_video_locally(path, ex_type)
+            
+            res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
+            
+            with res_col2:
+                # Check for outputs
+                if os.path.exists("final_output.mp4"):
+                    st.subheader("🎥 Video Analysis Replay")
+                    st.video("final_output.mp4")
                 
-                # --- NEW: DISPLAY THE PROCESSED VIDEO OVERLAY ---
-                with res_col2:
-                    if os.path.exists("final_output.mp4"):
-                        st.subheader("🎥 Video Analysis Replay")
-                        st.video("final_output.mp4")
-                    
-                    if os.path.exists("audit_result.jpg"):
-                        st.subheader("📸Key Movement Snapsho")
-                        st.image("audit_result.jpg", use_container_width=True)
-               
-                # --- DISPLAY THE FEEDBACK TEXT ---
-                st.divider()
-                st.markdown(feedback)
-                
-                # --- SAVE TO DATABASE ---
-                db = SessionLocal()
-                db.add(ExerciseAudit(
-                    user_id=st.session_state.user_id, 
-                    exercise_name=ex_type, 
-                    feedback_text=feedback
-                ))
-                db.commit()
-                db.close()
+                if os.path.exists("audit_result.jpg"):
+                    st.subheader("📸 Key Movement Snapshot")
+                    st.image("audit_result.jpg", use_container_width=True)
+            
+            st.divider()
+            st.markdown(feedback)
+            
+            # --- SAVE TO DATABASE ---
+            db = SessionLocal()
+            db.add(ExerciseAudit(
+                user_id=st.session_state.user_id, 
+                exercise_name=ex_type, 
+                feedback_text=feedback
+            ))
+            db.commit()
+            db.close()
+            
+            # CLEAN UP the temp file after everything is done
+            if os.path.exists(path):
+                os.remove(path)
 
 
 with tab_history:
