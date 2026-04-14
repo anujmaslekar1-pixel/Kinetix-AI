@@ -6,6 +6,6 @@ sqlalchemy
 fpdf
 opencv-python-headless
 mediapipe
-numpy
+numpy<2.0.0
 moviepy
 plotly
