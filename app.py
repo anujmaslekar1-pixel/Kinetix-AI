@@ -210,33 +210,32 @@ def export_pdf(plan_text, user_name):
 
     return bytes(pdf.output())
 
-
 def get_macros_from_text(text_input, client):
     """Parses natural language into JSON macros for plotting"""
-    # Use the same model list that you know works
     MODEL_PRIORITY = ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-1.5-flash"]
     
     prompt = f"""
-    Act as a nutrition database. Extract macros from this text: "{text_input}"
+    Act as a nutrition database. Extract macros from this text: {text_input}
     Return ONLY a JSON object. If multiple items, sum them.
     Format: {{"Protein": 30, "Carbs": 50, "Fats": 10, "Calories": 410}}
-    ""
+    """
     
     for model_id in MODEL_PRIORITY:
         try:
             response = client.models.generate_content(model=model_id, contents=prompt)
             import json
-            # Cleaning the string to ensure valid JSON
             clean_json = response.text.strip().replace("```json", "").replace("```", "")
             return json.loads(clean_json)
         except:
             continue
     return None
+
 def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
     MODEL_PRIORITY = ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-1.5-flash"]
     target_kcal = stats.get('target', 'Not specified')
-    prompt=f"""
-    ROLE - Clinical Nutritionist and Sports Dietitian.
+    
+    prompt = f"""
+    ROLE: Clinical Nutritionist and Sports Dietitian.
     USER PROFILE: {u_name} | {diet_type} diet | Nutrition Goal: {goal}.
     DAILY CALORIE TARGET: {target_kcal} kcal
     SPECIAL CONSTRAINTS/ALLERGIES: {requests}
@@ -253,6 +252,7 @@ def generate_diet_only_plan(u_name, diet_type, goal, requests, stats, client):
     6. Progression: This plan should be followed for 4-6 weeks.
     7. Format using professional Markdown with clear tables for the meals.
     """
+    
     for model_id in MODEL_PRIORITY:
         try:
             response = client.models.generate_content(model=model_id, contents=prompt)
