@@ -1019,26 +1019,22 @@ exercise_icon_data = base64.b64encode(open("exercise_icon.png", "rb").read()).de
 with tab_exercise:
     # --- CORE AI: GREEN GRADIENT HEADER ---
     st.markdown(
-            f"""
-            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
-                <img src="data:image/png;base64,{exercise_icon_data}" width="55">
-                <h1 style="background: linear-gradient(90deg, #FDC830, #F37335, #FF5F6D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: 800; margin: 0; line-height: 1;">Exercise Analyzer</h1>
-            </div>
-            <hr style="margin-top: 2px; margin-bottom: 25px; border: 0; border-top: 2px solid #eee; opacity: 0.4;">
-            """,
-            unsafe_allow_html=True
-        )
-    # ... Rest of your MediaPipe / OpenCV logic ...
+        f"""
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+            <img src="data:image/png;base64,{exercise_icon_data}" width="55">
+            <h1 style="background: linear-gradient(90deg, #FDC830, #F37335, #FF5F6D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.8rem; font-weight: 800; margin: 0; line-height: 1;">Exercise Analyzer</h1>
+        </div>
+        <hr style="margin-top: 2px; margin-bottom: 25px; border: 0; border-top: 2px solid #eee; opacity: 0.4;">
+        """,
+        unsafe_allow_html=True
+    )
+
     with st.expander("📌 MANDATORY FILMING INSTRUCTIONS", expanded=True):
         st.warning("""
         For accurate Analysis, please ensure:
-
-        *Note: Analysis accuracy depends on following these requirements.*
-
-
         1. **Side Angle:** Camera must be placed 90° to your side.
         2. **Full Body:** Head, Hips, and Feet must be visible throughout the rep.
-        3. **Lighting:** Ensure your joints are not obscured by other people, objects or shadows.
+        3. **Lighting:** Ensure your joints are not obscured.
         4. **Correct Exercise:** Ensure the selected exercise matches your video.
         """)
     
@@ -1046,51 +1042,49 @@ with tab_exercise:
     video_upload = st.file_uploader("Upload video", type=['mp4', 'mov'])
     
     if video_upload:
-    # 1. Prepare the video - WE REMOVE THE 'WITH' BLOCK to keep the file alive
-    tfile = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
-    tfile.write(video_upload.read())
-    path = tfile.name
-    tfile.close() # Close handle so OpenCV can open it, but delete=False keeps it on disk
-    
-    ui_col1, ui_col2, ui_col3 = st.columns([1, 2, 1])
-    with ui_col2:
-        st.info("Original Upload")
-        st.video(path)
-    
-    # 2. THE UPDATED BUTTON LOGIC
-    if st.button("🚀 Analyze Form", key="final_analysis_trigger"):
-        with st.spinner("Analyzing Video..."):
-            # Ensure process_video_locally doesn't crash on file paths
-            feedback = process_video_locally(path, ex_type)
-            
-            res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
-            
-            with res_col2:
-                # Check for outputs
-                if os.path.exists("final_output.mp4"):
-                    st.subheader("🎥 Video Analysis Replay")
-                    st.video("final_output.mp4")
+        # 1. Prepare the video - Indented to be inside 'if video_upload'
+        tfile = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
+        tfile.write(video_upload.read())
+        path = tfile.name
+        tfile.close() 
+        
+        ui_col1, ui_col2, ui_col3 = st.columns([1, 2, 1])
+        with ui_col2:
+            st.info("Original Upload")
+            st.video(path)
+        
+        # 2. THE UPDATED BUTTON LOGIC - Indented to be inside 'if video_upload'
+        if st.button("🚀 Analyze Form", key="final_analysis_trigger"):
+            with st.spinner("Analyzing Video..."):
+                feedback = process_video_locally(path, ex_type)
                 
-                if os.path.exists("audit_result.jpg"):
-                    st.subheader("📸 Key Movement Snapshot")
-                    st.image("audit_result.jpg", use_container_width=True)
-            
-            st.divider()
-            st.markdown(feedback)
-            
-            # --- SAVE TO DATABASE ---
-            db = SessionLocal()
-            db.add(ExerciseAudit(
-                user_id=st.session_state.user_id, 
-                exercise_name=ex_type, 
-                feedback_text=feedback
-            ))
-            db.commit()
-            db.close()
-            
-            # CLEAN UP the temp file after everything is done
-            if os.path.exists(path):
-                os.remove(path)
+                res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
+                
+                with res_col2:
+                    if os.path.exists("final_output.mp4"):
+                        st.subheader("🎥 Video Analysis Replay")
+                        st.video("final_output.mp4")
+                    
+                    if os.path.exists("audit_result.jpg"):
+                        st.subheader("📸 Key Movement Snapshot")
+                        st.image("audit_result.jpg", use_container_width=True)
+                
+                st.divider()
+                st.markdown(feedback)
+                
+                # --- SAVE TO DATABASE ---
+                db = SessionLocal()
+                db.add(ExerciseAudit(
+                    user_id=st.session_state.user_id, 
+                    exercise_name=ex_type, 
+                    feedback_text=feedback
+                ))
+                db.commit()
+                db.close()
+                
+                # CLEAN UP
+                if os.path.exists(path):
+                    os.remove(path)
 
 
 with tab_history:
