@@ -4,7 +4,7 @@ pillow
 python-dotenv
 sqlalchemy
 fpdf
-numpy<2.0.0
+numpy
 opencv-python-headless
 mediapipe
 moviepy
