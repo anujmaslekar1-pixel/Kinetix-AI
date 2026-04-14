@@ -285,11 +285,14 @@ def draw_skeleton(image, landmarks):
 
 
 def process_video_locally(video_path, exercise_type):
-    model_path = 'pose_landmarker.task'
+    model_path = os.path.join(os.getcwd(), 'pose_landmarker.task')
     # Download the model if it's missing
     if not os.path.exists(model_path):
-        url = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task"
-        urllib.request.urlretrieve(url, model_path)
+        try:
+            url = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task"
+            urllib.request.urlretrieve(url, model_path)
+        except Exception as e:
+            return f"Error downloading AI model: {e}"
 
     files_to_clear = ["output_render.mp4", "final_output.mp4", "audit_result.jpg"]
     for f in files_to_clear:
