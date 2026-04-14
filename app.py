@@ -209,7 +209,7 @@ def export_pdf(plan_text, user_name):
             pdf.multi_cell(0, 6, txt=safe_text(clean_line))
             pdf.ln(1)
 
-    return bytes(pdf.output())
+    return pdf.output(dest='S').encode('latin-1')
 
 def get_macros_from_text(text_input, client):
     """Parses natural language into JSON macros for plotting"""
