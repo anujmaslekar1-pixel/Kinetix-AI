@@ -8,3 +8,4 @@ opencv-python-headless
 mediapipe
 numpy
 moviepy
+plotly
