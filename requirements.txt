@@ -1,6 +1,11 @@
 streamlit
-google-generativeai
+google-genai
+pillow
+python-dotenv
+sqlalchemy
+fpdf
+plotly
 opencv-python-headless
 mediapipe
 numpy
-Pillow
+moviepy
