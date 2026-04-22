@@ -1155,28 +1155,24 @@ with tab_exercise:
         
         # 2. THE UPDATED BUTTON LOGIC (Handles Video and Image)
         if st.button("🚀 Analyze Form", key="final_analysis_trigger"):
-    with st.spinner("Analyzing Video"):
-
-        # Updated to catch the 3 things returned by the function
-        feedback, video_out_path, image_out_path = process_video_locally(path, ex_type)
-        
-        res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
-        
-        # --- DISPLAY THE PROCESSED VIDEO OVERLAY ---
-        with res_col2:
-            # Check for the variable path instead of the hardcoded filename
-            if os.path.exists(video_out_path):
-                st.subheader("🎥 Video Analysis Replay")
-                st.video(video_out_path)
-            
-            # Check for the variable path instead of the hardcoded filename
-            if os.path.exists(image_out_path):
-                st.subheader("📸 Key Movement Snapshot")
-                st.image(image_out_path, use_container_width=True)
-       
-        # --- DISPLAY THE FEEDBACK TEXT ---
-        st.divider()
-        st.markdown(feedback)
+    # This line must be indented exactly 4 spaces (or 1 tab) from the 'if'
+            with st.spinner("Analyzing Video"):
+                # Everything inside the spinner must be indented 4 more spaces
+                feedback, video_out_path, image_out_path = process_video_locally(path, ex_type)
+                
+                res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
+                
+                with res_col2:
+                    if os.path.exists(video_out_path):
+                        st.subheader("🎥 Video Analysis Replay")
+                        st.video(video_out_path)
+                    
+                    if os.path.exists(image_out_path):
+                        st.subheader("📸 Key Movement Snapshot")
+                        st.image(image_out_path, use_container_width=True)
+               
+                st.divider()
+                st.markdown(feedback)
                 
                 # --- SAVE TO DATABASE ---
                 db = SessionLocal()
