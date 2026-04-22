@@ -357,7 +357,7 @@ def process_video_locally(video_path, exercise_type):
     # --- 1. VIDEO WRITER INITIALIZATION ---
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
+    fourcc = cv2.VideoWriter_fourcc(*'avc1') 
     out = cv2.VideoWriter(raw_video_path, fourcc, fps, (w, h))
     
     # --- Metrics Initialization ---
