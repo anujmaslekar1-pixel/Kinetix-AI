@@ -330,6 +330,11 @@ def draw_skeleton(image, landmarks):
 
 def process_video_locally(video_path, exercise_type):
 
+    temp_dir = tempfile.gettempdir()
+    raw_video_path = os.path.join(temp_dir, "output_render.mp4")
+    final_video_path = os.path.join(temp_dir, "final_output.mp4")
+    audit_img_path = os.path.join(temp_dir, "audit_result.jpg")
+    
     files_to_clear = ["output_render.mp4", "final_output.mp4", "audit_result.jpg"]
     for f in files_to_clear:
         if os.path.exists(f):
@@ -339,7 +344,10 @@ def process_video_locally(video_path, exercise_type):
                 print(f"Could not remove old cache file {f}: {e}")
 
 
-    base_options = python.BaseOptions(model_asset_path='pose_landmarker.task')
+    base_path = os.path.dirname(__file__)
+    model_asset = os.path.join(base_path, 'pose_landmarker.task')
+    
+    base_options = python.BaseOptions(model_asset_path=model_asset)
     options = vision.PoseLandmarkerOptions(base_options=base_options, running_mode=vision.RunningMode.VIDEO)
     detector = vision.PoseLandmarker.create_from_options(options)
     cap = cv2.VideoCapture(video_path)
@@ -349,8 +357,6 @@ def process_video_locally(video_path, exercise_type):
     # --- 1. VIDEO WRITER INITIALIZATION ---
     w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    raw_video_path = "output_render.mp4"
-    final_video_path = "final_output.mp4"
     fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
     out = cv2.VideoWriter(raw_video_path, fourcc, fps, (w, h))
     
@@ -442,7 +448,6 @@ def process_video_locally(video_path, exercise_type):
             pass
 
     try:
-        # Using the correct variable names and standard libx264 codec
         with me.VideoFileClip(raw_video_path) as clip:
             clip.write_videofile(final_video_path, codec="libx264", audio=False, preset="ultrafast", logger=None)
     except Exception as e:
@@ -450,7 +455,7 @@ def process_video_locally(video_path, exercise_type):
 
     # Save the Audit Image
     if audit_frame is not None:
-        cv2.imwrite("audit_result.jpg", audit_frame)
+        cv2.imwrite(audit_img_path, audit_frame)
 
     # --- Summary Logic ---
     bar_dev = (max(bar_x_positions) - min(bar_x_positions)) * 100 if bar_x_positions else 0
@@ -1150,24 +1155,28 @@ with tab_exercise:
         
         # 2. THE UPDATED BUTTON LOGIC (Handles Video and Image)
         if st.button("🚀 Analyze Form", key="final_analysis_trigger"):
-            with st.spinner("Analyzing Video"):
+    with st.spinner("Analyzing Video"):
 
-                feedback = process_video_locally(path, ex_type)
-                res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
-                
-                # --- NEW: DISPLAY THE PROCESSED VIDEO OVERLAY ---
-                with res_col2:
-                    if os.path.exists("final_output.mp4"):
-                        st.subheader("🎥 Video Analysis Replay")
-                        st.video("final_output.mp4")
-                    
-                    if os.path.exists("audit_result.jpg"):
-                        st.subheader("📸Key Movement Snapshot")
-                        st.image("audit_result.jpg", use_container_width=True)
-               
-                # --- DISPLAY THE FEEDBACK TEXT ---
-                st.divider()
-                st.markdown(feedback)
+        # Updated to catch the 3 things returned by the function
+        feedback, video_out_path, image_out_path = process_video_locally(path, ex_type)
+        
+        res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
+        
+        # --- DISPLAY THE PROCESSED VIDEO OVERLAY ---
+        with res_col2:
+            # Check for the variable path instead of the hardcoded filename
+            if os.path.exists(video_out_path):
+                st.subheader("🎥 Video Analysis Replay")
+                st.video(video_out_path)
+            
+            # Check for the variable path instead of the hardcoded filename
+            if os.path.exists(image_out_path):
+                st.subheader("📸 Key Movement Snapshot")
+                st.image(image_out_path, use_container_width=True)
+       
+        # --- DISPLAY THE FEEDBACK TEXT ---
+        st.divider()
+        st.markdown(feedback)
                 
                 # --- SAVE TO DATABASE ---
                 db = SessionLocal()
