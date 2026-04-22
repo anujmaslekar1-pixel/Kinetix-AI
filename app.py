@@ -1218,6 +1218,7 @@ with tab_history:
             finally:
                 db.close()
         st.markdown('</div>', unsafe_allow_html=True)
+        
 
     # --- 2. DISPLAY SAVED PLANS ---
     st.subheader("📋 Saved Fitness Plans")
