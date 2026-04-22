@@ -172,22 +172,22 @@ def generate_fitness_plan(u_name, u_goal, u_cons, u_exp, u_focus, stats, demo_mo
 
 
 def export_pdf(plan_text, user_name):
-    pdf = FPDF()
+    # Specify 'latin-1' explicitly in the constructor
+    pdf = FPDF(format='A4') 
     pdf.add_page()
 
-    # Helper function to prevent Latin-1 encoding crashes
     def safe_text(s):
         if not s: return ""
-        # Replace common fancy characters manually for a better look
+        # Replace common fancy characters that Latin-1 doesn't like
         s = s.replace('\u2013', '-').replace('\u2014', '-').replace('\u2019', "'").replace('\u2018', "'")
-        # Final safety check to replace anything else with '?'
-        return s.encode('latin-1', 'replace').decode('latin-1')
+        s = s.replace('\u2022', '*').replace('\u201c', '"').replace('\u201d', '"')
+        # Encode to latin-1, ignoring characters it can't handle, then decode back to string
+        return s.encode('latin-1', 'ignore').decode('latin-1')
     
     # 1. Header Styling
-    pdf.set_fill_color(76, 175, 80) # Kinetix Green
+    pdf.set_fill_color(76, 175, 80) 
     pdf.set_text_color(255, 255, 255)
     pdf.set_font("Courier", 'B', 16)
-    # Applied safe_text to header
     pdf.cell(0, 12, txt=safe_text(f"KINETIX AI: {user_name.upper()} PLAN"), ln=True, align='C', fill=True)
     
     pdf.set_text_color(0, 0, 0)
@@ -208,8 +208,6 @@ def export_pdf(plan_text, user_name):
                 w_rest = 30 
                 
                 pdf.set_font("Courier", 'B', 9)
-                
-                # FIX: Applied safe_text to every table cell
                 pdf.cell(w_ex, 8, txt=safe_text(cols[0][:40]), border=1)
                 pdf.cell(w_sets, 8, txt=safe_text(cols[1] if len(cols) > 1 else ""), border=1)
                 if len(cols) > 2:
@@ -217,7 +215,6 @@ def export_pdf(plan_text, user_name):
                 
                 pdf.ln()
                 
-                # FIX: Applied safe_text to the Note section
                 if len(cols) > 3:
                     pdf.set_font("Courier", 'I', 8)
                     pdf.set_text_color(100, 100, 100)
@@ -225,15 +222,16 @@ def export_pdf(plan_text, user_name):
                     pdf.set_text_color(0, 0, 0)
                     pdf.ln(2)
         
-        # 3. REGULAR TEXT (Headers and Paragraphs)
+        # 3. REGULAR TEXT
         else:
             pdf.set_font("Courier", 'B' if line.startswith('#') else '', 10)
             clean_line = line.replace("#", "").replace("**", "").strip()
-            # Applied safe_text to regular text
             pdf.multi_cell(0, 6, txt=safe_text(clean_line))
             pdf.ln(1)
 
-    return bytes(pdf.output())
+    # FIX: Output as a string first, then convert to bytes
+    # This prevents the "encoding" error in most fpdf versions
+    return pdf.output(dest='S').encode('latin-1')
 
 
 def get_macros_from_text(text_input, client):
