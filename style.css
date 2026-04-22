@@ -1,0 +1,150 @@
+/* 1. Sidebar Branding & Layout */
+[data-testid="stSidebar"] {
+    background-color: #0e1117;
+    padding-top: 0rem;
+}
+
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:first-child {
+    padding-top: 0px !important;
+}
+
+[data-testid="stSidebar"] h1.sidebar-logo {
+    font-size: 40px !important; 
+    font-weight: 900 !important;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    margin-bottom: 10px !important;
+    background: linear-gradient(90deg, #ffffff, #00d4ff, #39ff14);
+    -webkit-background-clip: text; 
+    background-clip: text; 
+    -webkit-text-fill-color: transparent;
+}
+
+/* 2. Tabs - Big Emoji Logo & Stacked Text */
+button[data-baseweb="tab"] {
+    height: 140px !important; 
+    min-width: 150px !important;
+    display: flex !important;
+    flex-direction: column !important; /* Forces Emoji on top of Text */
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    background-color: #1e1e2f !important;
+    border-radius: 15px 15px 0 0 !important;
+    margin: 0 5px !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    padding: 10px !important;
+}
+
+/* Make the Emoji (Icon) Huge and Centered */
+button[data-baseweb="tab"] span {
+    font-size: 55px !important; 
+    line-height: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-bottom: 5px !important;
+    padding-top: 5px !important;
+}
+
+/* Make the Label text bigger and move it below */
+button[data-baseweb="tab"] div {
+    white-space: normal !important; 
+    text-align: center !important;
+    line-height: 1.2 !important;
+    overflow: visible !important;
+}
+
+button[data-baseweb="tab"] p {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.2px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    color: #ffffff !important;
+}
+
+/* Active Tab Glow */
+button[data-baseweb="tab"][aria-selected="true"] {
+    background: linear-gradient(180deg, #1e1e2f, #00d4ff1a) !important;
+    border-bottom: 5px solid #00d4ff !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] p {
+    color: #00d4ff !important;
+}
+
+/* 3. Metric Cards (BMI, TDEE, Weight) */
+div[data-testid="stMetric"] {
+    background: #1e1e2f;
+    border: 1px solid rgba(57, 255, 20, 0.2) !important;
+    padding: 20px !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+div[data-testid="stMetric"] label {
+    color: #a1a1a1 !important;
+    font-size: 14px !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: #39ff14 !important; 
+    font-weight: 800 !important;
+}
+
+/* 4. THE BUTTON ENGINE */
+[data-testid="stBaseButton-secondary"], .stButton > button {
+    width: 100% !important;
+    border-radius: 10px !important;
+    height: 3em !important;
+    background: linear-gradient(90deg, #00d4ff, #0055ff) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.analyze-btn [data-testid="stBaseButton-secondary"] {
+    background: linear-gradient(90deg, #00b09b, #96c93d) !important;
+}
+
+.logout-btn [data-testid="stBaseButton-secondary"] {
+    background: linear-gradient(90deg, #cb2d3e, #ef473a) !important;
+}
+
+.clear-btn [data-testid="stBaseButton-secondary"] {
+    background: linear-gradient(90deg, #f12711, #f5af19) !important;
+}
+
+.reset-btn [data-testid="stBaseButton-secondary"] {
+    background: linear-gradient(90deg, #f7971e, #ffd200) !important;
+    color: #0e1117 !important;
+}
+
+[data-testid="stBaseButton-secondary"]:hover {
+    transform: scale(1.02) !important;
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 5. App Container Background */
+[data-testid="stAppViewContainer"] {
+    background-color: #0b0d11;
+}
+
+/* Sidebar Logo Gradient Text - Extra Large */
+.sidebar-logo-text {
+    background: linear-gradient(90deg, #66BB6A, #A5D6A7, #81C784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 1500;      /* Slightly bolder to support the larger size */
+    font-size: 4.1rem;    /* Increased from 2.2rem to make it significantly bigger */
+    margin-top: -20px;    /* Adjusted slightly more to keep it centered with the logo */
+    display: inline-block;
+    line-height: 1.1;
+    white-space: nowrap;  /* Prevents "AI" from dropping to a second line */
+}
