@@ -1159,8 +1159,6 @@ with tab_exercise:
             with st.spinner("Analyzing Video"):
                 # Everything inside the spinner must be indented 4 more spaces
                 feedback, video_out_path, image_out_path = process_video_locally(path, ex_type)
-                st.video(vid_path)
-                st.image(img_path)
                 res_col1, res_col2, res_col3 = st.columns([1, 2, 1])
                 
                 with res_col2:
