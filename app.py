@@ -6,7 +6,7 @@ from google import genai
 from PIL import Image
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, Column, Integer, String, Text
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from fpdf import FPDF
 import plotly.graph_objects as go
