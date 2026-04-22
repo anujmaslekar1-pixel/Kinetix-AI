@@ -242,7 +242,7 @@ def get_macros_from_text(text_input, client):
     MODEL_PRIORITY = ["gemini-3-flash-preview", "gemini-2.5-flash", "gemini-1.5-flash"]
     
     prompt = f"""
-    Act as a nutrition database. Extract macros from this text: "{text_input}"
+    Act as a nutrition database. Extract macros from this text: {text_input}
     Return ONLY a JSON object. If multiple items, sum them.
     Format: {{"Protein": 30, "Carbs": 50, "Fats": 10, "Calories": 410}}
     """
