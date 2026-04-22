@@ -533,8 +533,13 @@ local_css("style.css")
 
 
 # --- 3. CONFIGURATION & STATE ---
-load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
+# Check if we are running on Streamlit Cloud or locally
+if "GEMINI_API_KEY" in st.secrets:
+    api_key = st.secrets["GEMINI_API_KEY"]
+else:
+    load_dotenv()
+    api_key = os.getenv("GEMINI_API_KEY")
+
 client = genai.Client(api_key=api_key)
 
 LOGO_IMAGE = "k2_logo.png"
