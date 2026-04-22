@@ -523,7 +523,7 @@ def process_video_locally(video_path, exercise_type):
     else:
         summary += "- ℹ️ **Bar Path:** Analysis incomplete.\n"
         
-    return summary
+    return summary, final_video_path, audit_img_path
 
 
 
